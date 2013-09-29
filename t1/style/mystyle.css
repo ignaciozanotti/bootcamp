@@ -1,0 +1,35 @@
+	
+section
+{
+	font-size: 28px;
+}
+
+.hide
+{
+	display: none;
+}
+
+.Wrap
+{
+	margin: 0 auto;
+}
+
+.txtAlCenter
+{
+	text-align: center;
+}			
+
+.highlight
+{
+	background-color: yellow;
+}
+
+.error
+{
+	color: red;
+}
+
+.trBack
+{
+	background-color: rgba(41, 104, 107, 0.34);
+}
