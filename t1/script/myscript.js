@@ -2,7 +2,6 @@ $(document).ready(function(event)
 { 
 
 	$( "section:hidden" ).fadeIn( 1000 );
-	//document.getElementById("myBtn").onclick=callIt;
 	$( "#txtfield" ).focus();
 
 
@@ -20,7 +19,6 @@ function task7()
 {
 	//alert('calling');
         
-
         name = $("#alias").val();
         //debbuger;
 
@@ -32,7 +30,6 @@ function task7()
                 success: function(data)
                 { 
                 	       //alert('success!');
-                	    //alert(data);
                 	    var output = '';
 
         			for (property in data)
@@ -43,7 +40,6 @@ function task7()
 
                                 spanned = spanMe(name,output);
 
-        		      //$('section').text(spanned);
                                $('#task7').html(spanned);
 
                 },
@@ -62,11 +58,6 @@ function task7()
 
 function task11()
 {
-        //alert('calling');
-        
-
-        //name = $("#alias").val();
-        //debbuger;
 
         $.ajax({
         type: 'POST',
@@ -75,37 +66,24 @@ function task11()
         dataType: 'jsonp',
                 success: function(data)
                 { 
-                        
-                             
-                               //alert('success!');
-                            //alert(data);
+
                             var output = '';
 
-                            /*
-
-
-                                for (statuses in data)
-                                {
-                                  output += statuses + ': ' + data[statuses]+'; ';
-                                }
-                                //alert(output);
-                                */
                                 output += '<blockquote>';
 
 
                                 var i;
                                 for (i = 0; i < data.statuses.length; ++i)
                                 {
-                                    //output += data.statuses[0].text
-                                    //from_user, text, created_at, profile_image_url
 
                                         output += '<q>';
 
-                                                output += 'status: '+i+'</br>';
-                                                output += 'user name: '+data.statuses[i].user.name+'</br>';
-                                                output += 'text: '+data.statuses[i].text+'</br>';
-                                                output += 'created at: '+data.statuses[i].created_at+'</br>';
-                                                output += 'profile image url: '+data.statuses[i].user.profile_image_url+'</br>';
+                                                output += '<b>status:</b> '+i+'</br>';
+                                                output += '<b>user name:</b> '+data.statuses[i].user.name+'</br>';
+                                                output += '<b>text:</b> '+data.statuses[i].text+'</br>';
+                                                output += '<b>created at:</b> '+data.statuses[i].created_at+'</br>';
+                                                output += '<b>profile image url:</b> '+data.statuses[i].user.profile_image_url+'</br>';
+                                                output += '<img src="'+data.statuses[i].user.profile_image_url+'" >'
 
                                         output += '</q></br>';
                                 }
@@ -117,19 +95,9 @@ function task11()
                                $('#task11').html(output);
                                
 
-                               console.log(data.statuses[0]);
+                               //console.log(data.statuses[0]);
 
-                               console.log(data.statuses.length);
-
-                               //var cant = data.statuses.length;
-
-
-
-
-
-
-
-                               
+                               //console.log(data.statuses.length);
 
                 },
                 error: function()
