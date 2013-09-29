@@ -72,24 +72,63 @@ function task11()
         type: 'POST',
         url: 'http://tweetproxy.ap01.aws.af.cm/search',
         data: {'q': 'html5'},
-        //dataType: 'json',
+        dataType: 'jsonp',
                 success: function(data)
                 { 
                         
+                             
                                //alert('success!');
                             //alert(data);
                             var output = '';
 
-                                for (property in data)
+                            /*
+
+
+                                for (statuses in data)
                                 {
-                                  output += property + ': ' + data[property]+'; ';
+                                  output += statuses + ': ' + data[statuses]+'; ';
                                 }
                                 //alert(output);
+                                */
+                                output += '<blockquote>';
 
-                                spanned = spanMe(name,output);
 
-                              //$('section').text(spanned);
-                               $('#task11').html(spanned);
+                                var i;
+                                for (i = 0; i < data.statuses.length; ++i)
+                                {
+                                    //output += data.statuses[0].text
+                                    //from_user, text, created_at, profile_image_url
+
+                                        output += '<q>';
+
+                                                output += 'status: '+i+'</br>';
+                                                output += 'user name: '+data.statuses[i].user.name+'</br>';
+                                                output += 'text: '+data.statuses[i].text+'</br>';
+                                                output += 'created at: '+data.statuses[i].created_at+'</br>';
+                                                output += 'profile image url: '+data.statuses[i].user.profile_image_url+'</br>';
+
+                                        output += '</q></br>';
+                                }
+
+                                output += '</blockquote>';
+                              
+
+
+                               $('#task11').html(output);
+                               
+
+                               console.log(data.statuses[0]);
+
+                               console.log(data.statuses.length);
+
+                               //var cant = data.statuses.length;
+
+
+
+
+
+
+
                                
 
                 },
