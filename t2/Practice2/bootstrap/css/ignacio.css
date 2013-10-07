@@ -1,0 +1,43 @@
+.inline
+{
+	display: inline;
+}
+
+.social
+{
+	float: right;
+}
+
+.news
+{
+	height: 200px;
+	background-color:rgb(176, 238, 176);
+	margin: 20px auto;
+}
+
+.ad
+{
+	height: 200px;
+	background-color: yellow;
+	margin: 0 auto;
+}
+
+.editorial
+{
+	width: 100%;
+	height: 100%;
+	background-color:rgb(255, 195, 140);
+	margin: 20px auto;
+}
+
+.editorial p
+{
+	display: inline;
+}
+
+.editorial img
+{
+	height: 60px;
+	display: inline;
+	float: right;
+}

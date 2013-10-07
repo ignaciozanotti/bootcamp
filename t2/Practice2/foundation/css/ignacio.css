@@ -1,0 +1,22 @@
+.editorial p
+{
+	display: inline;
+}
+
+.editorial img
+{
+	height: 60px;
+	display: inline;
+	float: right;
+}
+
+.table
+{
+	width: 100%;
+}
+
+.button
+{
+	width: 100%;
+}
+
