@@ -1,0 +1,22 @@
+<html>
+<head>
+<script src="src/math.js"></script>
+
+<script>
+function getValue()
+  {
+
+	
+  
+  var x=document.getElementById("myHeader");
+  //alert(x.innerHTML);
+  x.innerHTML = MathAPI.lerp(4,1,3);
+  }
+</script>
+</head>
+<body>
+
+<h1 id="myHeader" onclick="getValue()">Click me!</h1>
+
+</body>
+</html>
