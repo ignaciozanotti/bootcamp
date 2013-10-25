@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" ng-app>
+
+<head>
+  <meta charset="utf-8">
+  <title>Globant Bootcamp | MVC & Mixins | Ignacio Zanotti</title>
+  <link rel="stylesheet" href="styles/movies.css"/>
+  
+  
+
+</head>
+
+<body>
+
+ 
+	
+    <header>
+      <h1>Globant Bootcamp | MVC & Mixins | Ignacio Zanotti</h1>
+	  <h2>Backbone Favorite Movies</h2>
+	 </header>
+
+
+
+	 
+	 
+	 <div class="wrap" id="backbone">
+	 <h2>Backbone</h2>
+		 <div class="movieapp" id="movieapp">
+		  
+		
+
+		<div id="main">
+		  <input id="toggle-all" type="checkbox">
+		  <label for="toggle-all">Mark all as non-favorite</label>
+		  <ul id="movie-list"></ul>
+		</div>
+		
+			<div>
+		  <a id="clear-completed">Clear non-favorite movies</a>
+		  <div id="movie-count"></div>
+		</div>
+		
+		<input id="new-movie" type="text" placeholder="Insert your new favorite movie">
+		
+		</div>
+	</div>
+	
+	<div class="wrap" id="angular">
+			<h2>Angular</h2>
+			
+			<div  class="movieapp">
+		<div ng-controller="TodoCtrl">
+		  <!-- <span>{{remaining()}} of {{todos.length}} remaining</span> -->
+
+		  <ul class="unstyled">
+			<li ng-repeat="todo in todos">
+			  <input type="checkbox" ng-model="todo.done">
+			  <span class="done-{{todo.done}}">{{todo.text}}</span>
+			</li>
+		  </ul>
+		  
+		  <a id="clear-completed" href="" ng-click="archive()">Delete Selected Movies</a> 
+		  <form ng-submit="addTodo()">
+			<input type="text" ng-model="todoText"  size="30"
+				   placeholder="Insert your new favorite movie">
+			<input class="btn-primary" type="submit" value="add">
+		  </form>
+		  
+		  
+		   
+		</div>
+		</div>
+	</div>
+
+
+
+
+
+  <script src="scripts/json2.js"></script>
+  <script src="scripts/jquery.js"></script>
+  <script src="scripts/underscore.js"></script>
+  
+  <!-- backbone -->
+  <script src="scripts/backbone.js"></script>
+  <script src="scripts/backbone.localStorage.js"></script>
+  <script src="scripts/movies.js"></script>
+  
+  <!-- angular -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+  <script src="scripts/angularLocalStorageModule.js"></script>
+	<script src="scripts/todo.js"></script>
+	
+
+	
+	
+
+  <!-- Templates -->
+
+  <script type="text/template" id="item-template">
+    <div class="view">
+      <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+      <label><%- title %></label>
+      <a class="destroy"></a>
+    </div>
+    <input class="edit" type="text" value="<%- title %>" />
+  </script>
+
+  <script type="text/template" id="stats-template">
+    <% if (done) { %>
+      <a id="clear-completed">Clear <%= done %> completed <%= done == 1 ? 'movie' : 'movies' %></a>
+    <% } %>
+    <div class="movie-count"><b><%= remaining %></b> <%= remaining == 1 ? 'movie' : 'movies' %> favorited</div>
+  </script>
+
+  </body>
+</html>
