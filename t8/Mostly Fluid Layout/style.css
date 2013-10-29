@@ -1,0 +1,81 @@
+section {
+  float: left;
+
+  width: 66%;
+  
+  background-color: orange;
+}
+aside {
+  float: right;
+
+  width: 33%;
+
+  
+    background-color: yellow;
+}
+
+footer {
+  clear: both;
+  
+    background-color: green;
+}
+
+header
+{
+	background-color: red;
+}
+
+body
+{
+	background-color: purple;
+}
+
+@media (max-width: 600px) {
+	/* 633px grid (88x6 col, 21x5 gut; 88+21+88+21+88+21+88+21+88+21+88) */
+	/*
+	.inner {
+		position: relative;
+	}
+	.mast,
+	.intro,
+	.main,
+	.footer {
+		float: none;
+		width: auto;
+	}
+	*/
+	body
+	{
+		background-color: peru;
+	}
+	section, aside
+	{
+		width: 100%;
+	}
+}
+
+@media (min-width: 1024px) {
+	/* 633px grid (88x6 col, 21x5 gut; 88+21+88+21+88+21+88+21+88+21+88) */
+	/*
+	.inner {
+		position: relative;
+	}
+	.mast,
+	.intro,
+	.main,
+	.footer {
+		float: none;
+		width: auto;
+	}
+	*/
+	body
+	{
+		background-color: yellow;
+		width: 1024px;
+		margin: 0 auto;
+	}
+	header, section, aside
+	{
+		
+	}
+}
