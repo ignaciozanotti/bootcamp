@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=620">
+<title>HTML5 Demo: Storage</title>
+<link rel="stylesheet" href="css/html5demos.css">
+<script src="js/h5utils.js"></script>
+
+<script>
+
+	var html5rocks = {};
+	html5rocks.indexedDB = {};
+	html5rocks.indexedDB.db = null;
+	
+	html5rocks.indexedDB.open = function() {
+	  var version = 1;
+	  var request = indexedDB.open("todo", version);
+
+	  // We can only create Object stores in a versionchange transaction.
+	  request.onupgradeneeded = function(e) {
+		var db = e.target.result;
+
+		// A versionchange transaction is started automatically.
+		e.target.transaction.onerror = html5rocks.indexedDB.onerror;
+
+		if(db.objectStoreNames.contains("todo")) {
+		  db.deleteObjectStore("todo");
+		}
+
+		var store = db.createObjectStore("todo",
+		  {keyPath: "timeStamp"});
+	  };
+
+	  request.onsuccess = function(e) {
+		html5rocks.indexedDB.db = e.target.result;
+		html5rocks.indexedDB.getAllTodoItems();
+	  };
+
+	  request.onerror = html5rocks.indexedDB.onerror;
+	};
+	
+	html5rocks.indexedDB.addTodo = function(todoText) {
+	  var db = html5rocks.indexedDB.db;
+	  var trans = db.transaction(["todo"], "readwrite");
+	  var store = trans.objectStore("todo");
+	  var request = store.put({
+		"text": todoText,
+		"timeStamp" : new Date().getTime()
+	  });
+
+	  request.onsuccess = function(e) {
+		// Re-render all the todo's
+		html5rocks.indexedDB.getAllTodoItems();
+	  };
+
+	  request.onerror = function(e) {
+		console.log(e.value);
+	  };
+	};
+	
+	html5rocks.indexedDB.getAllTodoItems = function() {
+	  var todos = document.getElementById("todoItems");
+	  todos.innerHTML = "";
+
+	  var db = html5rocks.indexedDB.db;
+	  var trans = db.transaction(["todo"], "readwrite");
+	  var store = trans.objectStore("todo");
+
+	  // Get everything in the store;
+	  var keyRange = IDBKeyRange.lowerBound(0);
+	  var cursorRequest = store.openCursor(keyRange);
+
+	  cursorRequest.onsuccess = function(e) {
+		var result = e.target.result;
+		if(!!result == false)
+		  return;
+
+		renderTodo(result.value);
+		result.continue();
+	  };
+
+	  cursorRequest.onerror = html5rocks.indexedDB.onerror;
+	};
+	
+	function renderTodo(row) {
+	  var todos = document.getElementById("todoItems");
+	  var li = document.createElement("li");
+	  var a = document.createElement("a");
+	  var t = document.createTextNode();
+	  t.data = row.text;
+
+	  a.addEventListener("click", function(e) {
+		html5rocks.indexedDB.deleteTodo(row.timeStamp);
+	  });
+
+	  a.textContent = " [Delete]";
+	  li.appendChild(t);
+	  li.appendChild(a);
+	  todos.appendChild(li);
+	};
+	
+	html5rocks.indexedDB.deleteTodo = function(id) {
+	  var db = html5rocks.indexedDB.db;
+	  var trans = db.transaction(["todo"], "readwrite");
+	  var store = trans.objectStore("todo");
+
+	  var request = store.delete(id);
+
+	  request.onsuccess = function(e) {
+		html5rocks.indexedDB.getAllTodoItems();  // Refresh the screen
+	  };
+
+	  request.onerror = function(e) {
+		console.log(e);
+	  };
+	};
+
+</script>
+
+</head>
+<body>
+<section id="wrapper">
+
+    <header>
+      <h1>Globant Bootcamp | HTML5 APIs</h1>
+	  
+    </header>
+
+<style>
+article div { 
+  margin: 10px 0;
+}
+
+label {
+  float: left;
+  display: block;
+  width: 125px;
+  line-height: 32px;
+}
+</style>
+<article>
+	<fieldset>
+		<legend>sessionStorage & localStorage</legend>
+	  <section>
+		<p>Content loaded from previous sessions:</p>
+		<ul id="previous"></ul>
+	  </section>
+	  <section>
+		<div>
+		  <label for="session">sessionStorage:</label>
+		  <input type="text" name="session" value="" id="session" />          
+		</div>
+		<div>
+		  <label for="local">localStorage:</label>
+		  <input type="text" name="local" value="" id="local" />
+		</div>
+	<input type="button" id="save" value="Save" />
+    <input type="button" id="clear" value="Clear storage" />
+	  </section>
+	</fieldset>
+	<fieldset>
+			<p>Content loaded from previous sessions:</p>
+		<legend>IndexedDB</legend>
+		<div>
+			<ul id="todoItems">
+			</ul>
+		</div>
+				<div>
+		  <label for="local">indexedDB:</label>
+		  <input type="text" name="indexed" value="" id="indexed" />
+		</div>
+			<input type="button" id="daleDB" value="Save" />
+	</fieldset>
+	<fieldset>
+			<p>CANVAS:</p>
+		<canvas id="myCanvas" width="500" height="200"></canvas>
+	</fieldset>
+	<fieldset>
+			<p>Drag & Drop: under construction</p>
+	</fieldset>
+
+
+
+</article>
+
+
+
+<a id="html5badge" href="http://www.w3.org/html/logo/">
+<img src="http://www.w3.org/html/logo/badge/html5-badge-h-connectivity-device-graphics-multimedia-performance-semantics-storage.png" width="325" height="64" alt="HTML5 Powered with Connectivity / Realtime, Device Access, Graphics, 3D & Effects, Multimedia, Performance & Integration, Semantics, and Offline & Storage" title="HTML5 Powered with Connectivity / Realtime, Device Access, Graphics, 3D & Effects, Multimedia, Performance & Integration, Semantics, and Offline & Storage">
+</a>
+    <footer>Ignacio Zanotti</footer> 
+</section>
+    <script>
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      function drawRectangle(myRectangle, context) {
+        context.beginPath();
+        context.rect(myRectangle.x, myRectangle.y, myRectangle.width, myRectangle.height);
+        context.fillStyle = '#8ED6FF';
+        context.fill();
+        context.lineWidth = myRectangle.borderWidth;
+        context.strokeStyle = 'black';
+        context.stroke();
+      }
+      function animate(myRectangle, canvas, context, startTime) {
+        // update
+        var time = (new Date()).getTime() - startTime;
+
+        var linearSpeed = 100;
+        // pixels / second
+        var newX = linearSpeed * time / 1000;
+
+        if(newX < canvas.width - myRectangle.width - myRectangle.borderWidth / 2) {
+          myRectangle.x = newX;
+        }
+        else
+        {
+          myRectangle.x = 0;
+        }
+
+        // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawRectangle(myRectangle, context);
+
+        // request new frame
+        requestAnimFrame(function() {
+          animate(myRectangle, canvas, context, startTime);
+        });
+      }
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+
+      var myRectangle = {
+        x: 0,
+        y: 75,
+        width: 100,
+        height: 50,
+        borderWidth: 5
+      };
+
+      drawRectangle(myRectangle, context);
+
+      // wait one second before starting animation
+      setTimeout(function() {
+        var startTime = (new Date()).getTime();
+        animate(myRectangle, canvas, context, startTime);
+      }, 1000);
+    </script>
+<script>
+
+
+function init() {
+  html5rocks.indexedDB.open(); // open displays the data previously saved
+}
+
+window.addEventListener("DOMContentLoaded", init, false);
+
+
+
+
+
+function getStorage(type) {
+  var storage = window[type + 'Storage'],
+    delta = 0,
+    li = document.createElement('li');
+
+  if (!window[type + 'Storage']) return;
+
+  if (storage.getItem('value')) {
+    delta = ((new Date()).getTime() - (new Date()).setTime(storage.getItem('timestamp'))) / 1000;
+    
+    li.innerHTML = type + 'Storage: ' + storage.getItem('value') + ' (last updated: ' + delta + 's ago)';
+  } else {
+    li.innerHTML = type + 'Storage is empty';
+  }
+
+  document.querySelector('#previous').appendChild(li);
+}
+
+getStorage('session');
+getStorage('local');
+
+addEvent(document.querySelector('#save'), 'click', function ()
+{
+
+	var se =document.getElementById("session").value;
+	alert(se);
+	
+	var lo =document.getElementById("local").value;
+	alert(lo);
+	
+	sessionStorage.setItem('value', se);
+	sessionStorage.setItem('timestamp', (new Date()).getTime());
+  
+    localStorage.setItem('value', lo);
+	localStorage.setItem('timestamp', (new Date()).getTime());
+	
+	getStorage('session');
+	getStorage('local');
+
+});
+
+addEvent(document.querySelector('#clear'), 'click', function () {
+  sessionStorage.clear();
+  localStorage.clear();
+  
+  document.querySelector('#previous').innerHTML = '';
+  getStorage('local');
+  getStorage('session');
+});
+
+addEvent(document.querySelector('#daleDB'), 'click', function ()
+{
+
+  var todo = document.getElementById('indexed');
+
+  html5rocks.indexedDB.addTodo(todo.value);
+  //todo.value = '';
+
+
+});
+
+
+
+</script>
+<script src="js/prettify.packed.js"></script>
+
+</body>
+</html>
